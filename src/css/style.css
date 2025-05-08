@@ -109,7 +109,10 @@ button {
   font-size: var(--large-font);
   cursor: pointer;
 }
-
+button:active{
+  background-color: var(--tertiary-color);
+  padding: 0.45em 1.8em;
+}
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
