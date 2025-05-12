@@ -16,15 +16,21 @@ function addProductToCart(product) {
 // add to cart button event handler
 async function addToCartHandler(e) {
   try {
-    if (!e.target.dataset.id) {
+    const id = e.target.dataset.id || e.currentTarget.dataset.id;
+    if (!id) {
+      console.log("Button structure:", e.target);
       throw new Error("Product ID not found");
     }
-    const product = await dataSource.findProductById(e.target.dataset.id);
+    const product = await dataSource.findProductById(id);
     if (product) {
       addProductToCart(product);
       console.log("Product added to cart successfully");
     }
   } catch (error) {
-    console.error("Error adding product to cart:", error);
+    console.error("Error details:", {
+      buttonId: e.target.id,
+      datasetId: e.target.dataset.id,
+      error: error.message
+    });
   }
 }
