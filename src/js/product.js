@@ -1,36 +1,35 @@
-import { setLocalStorage } from "./utils.mjs";
+import { getParam } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import ProductDetails from "./ProductDetails.mjs";
+
 
 const dataSource = new ProductData("tents");
+const productId = getParam("product");
 
-const addToCartButton = document.getElementById("addToCart");
-if (addToCartButton) {
-  addToCartButton.addEventListener("click", addToCartHandler);
-}
+const product = new ProductDetails(productId, dataSource);
+product.init();
 
-function addProductToCart(product) {
-  let cart = JSON.parse(localStorage.getItem("so-cart")) || [];
-  cart.push(product);
-  setLocalStorage("so-cart", cart);
-}
-// add to cart button event handler
-async function addToCartHandler(e) {
-  try {
-    const id = e.target.dataset.id || e.currentTarget.dataset.id;
-    if (!id) {
-      console.log("Button structure:", e.target);
-      throw new Error("Product ID not found");
-    }
-    const product = await dataSource.findProductById(id);
-    if (product) {
-      addProductToCart(product);
-      console.log("Product added to cart successfully");
-    }
-  } catch (error) {
-    console.error("Error details:", {
-      buttonId: e.target.id,
-      datasetId: e.target.dataset.id,
-      error: error.message
-    });
-  }
-}
+// console.log(dataSource.findProductById(productId));
+
+// const addToCartButton = document.getElementById("addToCart");
+// if (addToCartButton) {
+//   addToCartButton.addEventListener("click", addToCartHandler);
+// }
+
+// // add to cart button event handler
+// async function addToCartHandler(e) {
+//   try {
+//     if (!e.target.dataset.id) {
+//       throw new Error("Product ID not found");
+//     }
+//     const product = await dataSource.findProductById(e.target.dataset.id);
+//     if (product) {
+//       addProductToCart(product);
+//       console.log("Product added to cart successfully");
+//     }
+//   } catch (error) {
+//     console.error("Error adding product to cart:", error);
+//   }
+// }
+
+
