@@ -9,7 +9,7 @@
 
    ### Production Link
 
-   https://wdd-330-sleepoutside-ikv3715q9-farai-dandaras-projects.vercel.app/
+ https://dulcet-cendol-6743d9.netlify.app/
 
 ### Prerequisites
 
