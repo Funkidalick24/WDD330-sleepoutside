@@ -60,7 +60,7 @@ export default class ProductDetails {
     async checkDuplicates() {
 
       
-        const cart = getLocalStorage("so-cart") || [];
+        const cart = getLocalStorage("cart") || [];
         if (cart.length > 0) {
             const cartItem = cart.find((item) => item.Id === this.productId);
             if (cartItem) {
@@ -68,7 +68,7 @@ export default class ProductDetails {
                 // increase quantity of the item in the cart
                 cartItem.quantity += 1;
                 // Update the cart in local storage 
-                setLocalStorage("so-cart", cart);
+                setLocalStorage("cart", cart);
                 // Update the quantity input field
                 document.querySelector("#quantity").value = cartItem.quantity;
 
@@ -76,7 +76,7 @@ export default class ProductDetails {
                 // filter out the item from the cart with same id   
                 const filteredCart = cart.filter((item) => item.Id !== this.productId);
                 // Save the updated cart back to local storage
-                setLocalStorage("so-cart", filteredCart);
+                setLocalStorage("cart", filteredCart);
 
                 // Add the product to the cart
                 this.addToCart();
