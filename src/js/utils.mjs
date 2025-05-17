@@ -22,6 +22,13 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
+<<<<<<< HEAD
+export function getParam(param) {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(param);
+}
+=======
 // get the product id from the query string
 export function getParam(param) {
   const queryString = window.location.search;
@@ -38,3 +45,4 @@ export function renderListWithTemplate(template, parentElement, list, position =
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
+>>>>>>> origin/hb--dynamic-product-image-size

@@ -244,6 +244,54 @@ button:active {
   grid-column: 3;
 }
 
+.product-detail .product-image {
+  position: relative;
+}
+
+.product-detail .discount-badge {
+  font-size: 1em;
+  padding: 0.5em 0.8em;
+}
+
+/* Price display styles */
+.product-price {
+  font-size: 1.2em;
+  margin: 0.5em 0;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: var(--light-grey);
+  margin-right: 0.5em;
+}
+
+.current-price {
+  color: var(--tertiary-color);
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.price-savings {
+  display: block;
+  font-size: 0.9em;
+  color: var(--secondary-color);
+  margin-top: 0.3em;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.5em 0.8em;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
@@ -263,4 +311,10 @@ button:active {
 footer {
   font-size: var(--small-font);
   padding: 1em;
+}
+
+/* Style for dynamic product image on product details page */
+/* This goal is for the image to resize based on the width of the screen. */
+.divider img {
+  transition: width 0.3s ease;
 }
