@@ -21,6 +21,7 @@ export function setClick(selector, callback) {
   });
   qs(selector).addEventListener("click", callback);
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 export function getParam(param) {
@@ -46,3 +47,5 @@ export function renderListWithTemplate(template, parentElement, list, position =
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 >>>>>>> origin/hb--dynamic-product-image-size
+=======
+>>>>>>> parent of 2413567 (Refactor product display and cart functionality; add discount badge and price formatting)
