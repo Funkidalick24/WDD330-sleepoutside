@@ -1,1 +1,0 @@
-import { resizeProductImages } from './image.mjs';

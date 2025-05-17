@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { setLocalStorage } from "./utils.mjs";
+=======
+import { getParam } from "./utils.mjs";
+>>>>>>> parent of 448a718 (Merge pull request #9 from Funkidalick24/mk--individual)
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
 
@@ -33,6 +37,7 @@ product.init();
 // }
 
 
+<<<<<<< HEAD
 const addToCartButton = document.getElementById("addToCart");
 if (addToCartButton) {
     addToCartButton.addEventListener("click", addToCartHandler);
@@ -58,3 +63,5 @@ async function addToCartHandler(e) {
       console.error("Error adding product to cart:", error);
   }
 }
+=======
+>>>>>>> parent of 448a718 (Merge pull request #9 from Funkidalick24/mk--individual)
