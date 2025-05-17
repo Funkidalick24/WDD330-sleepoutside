@@ -264,3 +264,9 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* Style for dynamic product image on product details page */
+/* This goal is for the image to resize based on the width of the screen. */
+.divider img {
+  transition: width 0.3s ease;
+}
