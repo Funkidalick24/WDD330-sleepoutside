@@ -206,6 +206,47 @@ button:active {
   width: 100%;
 }
 
+.product-detail__quantity {
+  margin: 1rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.product-detail__quantity label {
+  font-size: 1.2em;
+  color: var(--dark-grey);
+}
+
+.quantity-input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid var(--dark-grey);
+  border-radius: 4px;
+  font-size: 1em;
+  text-align: center;
+  align-items: center;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 3px var(--primary-color);
+}
+
+/* Remove spinner buttons for number input */
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
 /* Start cart list card styles */
 .cart-card {
   display: grid;
@@ -306,6 +347,54 @@ button:active {
     font-size: inherit;
     grid-template-columns: 150px auto 15%;
   }
+}
+
+/* Add new popup notification styles */
+.cart-notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  font-size: 1rem;
+  animation: slideIn 0.3s ease-out, fadeOut 0.5s ease-out 2.5s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Style for cart item count */
+.cart-count {
+  position: absolute;
+  top: 0;
+  right: -5px;
+  background-color: var(--tertiary-color);
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: var(--small-font);
 }
 
 footer {
