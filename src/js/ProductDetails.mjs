@@ -58,32 +58,33 @@ export default class ProductDetails {
 
     // Check for duplicate items in the cart
     async checkDuplicates() {
-
-      
-        const cart = getLocalStorage("cart") || [];
-        if (cart.length > 0) {
-            const cartItem = cart.find((item) => item.Id === this.productId);
-            if (cartItem) {
-                this.showPopupMessage("Item already in cart");
-                // increase quantity of the item in the cart
-                cartItem.quantity += 1;
-                // Update the cart in local storage 
-                setLocalStorage("cart", cart);
-                // Update the quantity input field
-                document.querySelector("#quantity").value = cartItem.quantity;
-
+        try {
+            const cart = getLocalStorage("so-cart") || [];
+            if (cart.length > 0) {
+                const quantity = document.getElementById("quantity").value;
+                const cartItem = cart.find((item) => item.Id === this.productId);
+                if (cartItem) {
+                    // Just update quantity without showing "already in cart" message
+                    cartItem.quantity += parseInt(quantity);
+                    setLocalStorage("so-cart", cart);
+                    this.showPopupMessage("Item added to cart");
+                } else {
+                    // Add new item
+                    const product = await this.dataSource.findProductById(this.productId);
+                    product.quantity = parseInt(quantity);
+                    cart.push(product);
+                    setLocalStorage("so-cart", cart);
+                    this.showPopupMessage("Item added to cart");
+                }
             } else {
-                // filter out the item from the cart with same id   
-                const filteredCart = cart.filter((item) => item.Id !== this.productId);
-                // Save the updated cart back to local storage
-                setLocalStorage("cart", filteredCart);
-
-                // Add the product to the cart
-                this.addToCart();
+                // First item in cart
+                const product = await this.dataSource.findProductById(this.productId);
+                product.quantity = parseInt(document.getElementById("quantity").value);
+                setLocalStorage("so-cart", [product]);
+                this.showPopupMessage("Item added to cart");
             }
-        } else {
-            // if cart is empty, add the product to the cart
-            this.addToCart();
+        } catch (error) {
+            console.error("Error adding to cart:", error);
         }
     }
 
@@ -127,14 +128,21 @@ export default class ProductDetails {
     // Add showPopupMessage as a class method
     showPopupMessage(message) {
         const popup = document.createElement('div');
-        popup.className = 'popup-message';
+        popup.className = 'cart-notification';
         popup.textContent = message;
+
+        // Remove any existing notifications
+        const existingPopup = document.querySelector('.cart-notification');
+        if (existingPopup) {
+            existingPopup.remove();
+        }
 
         document.body.appendChild(popup);
 
+        // Auto-remove after animation completes (3 seconds)
         setTimeout(() => {
             popup.remove();
-        }, 2000);
+        }, 3000);
     }
 
     renderProductDetails(selector) {
