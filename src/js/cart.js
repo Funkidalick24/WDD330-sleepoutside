@@ -1,9 +1,5 @@
-import {
-  getLocalStorage,
-  setLocalStorage,
-} from "./utils.mjs";
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import ShoppingCart from "./Shoppingcart.mjs";
-
 
 function cartItemTemplate(item, index) {
   return `<li class="cart-card divider">
@@ -34,7 +30,6 @@ productListEl.innerHTML = htmlItems;
 
 // Attach event listeners to all "X" buttons
 document.querySelectorAll(".remove-item").forEach((button) => {
-  
   button.addEventListener("click", function () {
     const itemIndex = this.dataset.index; // Get the index from the data-index attribute
     removeItemFromCart(itemIndex); // Remove the item from the cart
@@ -58,7 +53,6 @@ function removeItemFromCart(itemIndex) {
 }
 
 // Listen for checkout
-
 
 function checkoutCart() {
   const checkoutBtn = document.querySelector("#checkout-btn");
