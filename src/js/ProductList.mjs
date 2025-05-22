@@ -6,7 +6,7 @@ function productCardTemplate(product) {
       <a href="product_pages/?products=${product.Id}">
         <img src="${product.Image}" alt="${product.Name}">
         <h2>${product.Brand.Name}</h2>
-        <h3>${product.Name}</h3>
+        <h3>${product.NameWithoutBrand}</h3>
         <p class="product-card__price">$${product.FinalPrice}</p>
       </a>
     </li>
