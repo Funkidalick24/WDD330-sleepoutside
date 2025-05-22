@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -109,10 +109,7 @@ button {
   font-size: var(--large-font);
   cursor: pointer;
 }
-button:active {
-  background-color: var(--tertiary-color);
-  padding: 0.45em 1.8em;
-}
+
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
@@ -400,10 +397,12 @@ button:active {
 footer {
   font-size: var(--small-font);
   padding: 1em;
+
 }
 
 /* Style for dynamic product image on product details page */
 /* This goal is for the image to resize based on the width of the screen. */
 .divider img {
   transition: width 0.3s ease;
+
 }
