@@ -121,17 +121,43 @@ button:active {
 
 /* Cart icon styles */
 .cart {
-  padding-top: 1em;
-  position: relative;
-  text-align: center;
+    padding-top: 1em;
+    position: relative;
+    text-align: center;
 }
 
 .cart svg {
-  width: 25px;
+    width: 25px;
 }
 
 .cart:hover svg {
-  fill: gray;
+    fill: gray;
+}
+
+/* Cart counter superscript styles */
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--tertiary-color);
+    color: white;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7em;
+    min-width: 1.2rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .cart-count {
+        font-size: 0.6em;
+        padding: 0.15rem 0.4rem;
+        top: -6px;
+        right: -6px;
+    }
 }
 
 /* End cart icon styles */
@@ -252,8 +278,10 @@ button:active {
   display: grid;
   grid-template-columns: 25% auto 15%;
   font-size: var(--small-font);
-  /* max-height: 120px; */
   align-items: center;
+  gap: 1rem;
+  padding: 0.5em;
+  border-bottom: 1px solid var(--light-grey);
 }
 
 .cart-card__image {
@@ -261,28 +289,67 @@ button:active {
   grid-column: 1;
 }
 
-.cart-card p {
-  margin-top: 0;
+.cart-card__image img {
+  width: 100%;
+  height: auto;
 }
 
-.cart-card .card__name {
+.cart-card__name {
   grid-row: 1;
   grid-column: 2;
+  font-size: 1em;
+  text-decoration: none;
+  color: var(--dark-grey);
 }
 
 .cart-card__color {
   grid-row: 2;
   grid-column: 2;
+  color: var(--dark-grey);
 }
 
 .cart-card__quantity {
   grid-row: 1;
   grid-column: 3;
+  text-align: right;
 }
 
 .cart-card__price {
   grid-row: 2;
   grid-column: 3;
+  text-align: right;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* Cart footer styles */
+#cart-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1em;
+  border-top: 1px solid var(--light-grey);
+}
+
+.cart-total {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* Checkout button styles */
+.checkout {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 1em 0;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
 }
 
 .product-detail .product-image {
@@ -383,27 +450,4 @@ button:active {
     opacity: 0;
     visibility: hidden;
   }
-}
-
-/* Style for cart item count */
-.cart-count {
-  position: absolute;
-  top: 0;
-  right: -5px;
-  background-color: var(--tertiary-color);
-  color: white;
-  border-radius: 50%;
-  padding: 0.2rem 0.5rem;
-  font-size: var(--small-font);
-}
-
-footer {
-  font-size: var(--small-font);
-  padding: 1em;
-}
-
-/* Style for dynamic product image on product details page */
-/* This goal is for the image to resize based on the width of the screen. */
-.divider img {
-  transition: width 0.3s ease;
 }
