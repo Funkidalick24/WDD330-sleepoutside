@@ -59,28 +59,28 @@ export default class ProductDetails {
     // Check for duplicate items in the cart
     async checkDuplicates() {
         try {
-            const cart = getLocalStorage("so-cart") || [];
+            const cart = getLocalStorage("cart") || [];
             if (cart.length > 0) {
                 const quantity = document.getElementById("quantity").value;
                 const cartItem = cart.find((item) => item.Id === this.productId);
                 if (cartItem) {
                     // Just update quantity without showing "already in cart" message
                     cartItem.quantity += parseInt(quantity);
-                    setLocalStorage("so-cart", cart);
+                    setLocalStorage("cart", cart);
                     this.showPopupMessage("Item added to cart");
                 } else {
                     // Add new item
                     const product = await this.dataSource.findProductById(this.productId);
                     product.quantity = parseInt(quantity);
                     cart.push(product);
-                    setLocalStorage("so-cart", cart);
+                    setLocalStorage("cart", cart);
                     this.showPopupMessage("Item added to cart");
                 }
             } else {
                 // First item in cart
                 const product = await this.dataSource.findProductById(this.productId);
                 product.quantity = parseInt(document.getElementById("quantity").value);
-                setLocalStorage("so-cart", [product]);
+                setLocalStorage("cart", [product]);
                 this.showPopupMessage("Item added to cart");
             }
         } catch (error) {
