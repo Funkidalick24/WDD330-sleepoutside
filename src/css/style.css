@@ -233,11 +233,10 @@ button:active {
 }
 
 .product-detail__quantity {
-  margin: 1rem auto;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .product-detail__quantity label {
@@ -246,13 +245,11 @@ button:active {
 }
 
 .quantity-input {
-  width: 80px;
+  width: 60px;
   padding: 0.5rem;
   border: 1px solid var(--dark-grey);
   border-radius: 4px;
-  font-size: 1em;
   text-align: center;
-  align-items: center;
 }
 
 .quantity-input:focus {
@@ -276,7 +273,7 @@ button:active {
 /* Start cart list card styles */
 .cart-card {
   display: grid;
-  grid-template-columns: 25% auto 15%;
+  grid-template-columns: 25% auto 15% 10%;
   font-size: var(--small-font);
   align-items: center;
   gap: 1rem;
@@ -320,6 +317,26 @@ button:active {
   text-align: right;
   color: var(--primary-color);
   font-weight: bold;
+}
+
+/* Remove button styles */
+.cart-card__remove {
+  grid-row: 1/3;
+  grid-column: 4;
+  padding: 0.5em;
+  background-color: var(--light-grey);
+  color: var(--dark-grey);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  height: fit-content;
+  transition: all 0.2s ease;
+}
+
+.cart-card__remove:hover {
+  background-color: #ff6b6b;
+  color: white;
 }
 
 /* Cart footer styles */
@@ -425,12 +442,8 @@ button:hover {
   color: white;
   padding: 0.8rem 1.5rem;
   border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
   z-index: 1000;
-  font-size: 1rem;
-  animation:
-    slideIn 0.3s ease-out,
-    fadeOut 0.5s ease-out 2.5s forwards;
 }
 
 @keyframes slideIn {
@@ -441,16 +454,6 @@ button:hover {
   to {
     transform: translateX(0);
     opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
   }
 }
 

@@ -1,28 +1,51 @@
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
-
-// Cargar header/footer
-loadHeaderFooter();
-
-const dataSource = new ProductData("tents");
-const element = document.querySelector(".product-list");
-
-const urlParams = new URLSearchParams(window.location.search);
-const searchQuery = urlParams.get("search");
+import { loadHeaderFooter, updateCartCount } from "./utils.mjs";
 
 async function init() {
-  let products = await dataSource.getData();
+  try {
+    // Load header and footer first
+    await loadHeaderFooter();
+    
+    // Update cart count
+    updateCartCount();
 
-  if (searchQuery) {
-    products = products.filter((product) =>
-      product.Name.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
+    // Get product list element
+    const element = document.querySelector(".product-list");
+    if (!element) {
+      console.error("Product list element not found");
+      return;
+    }
+
+    // Initialize product data
+    const dataSource = new ProductData("tents");
+    let products = await dataSource.getData();
+
+    // Handle search functionality
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("search");
+    if (searchQuery) {
+      products = products.filter((product) =>
+        product.Name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Render product list
+    const productList = new ProductList("Tents", dataSource, element);
+    productList.renderList(products);
+
+    // Initialize modal if needed
+    showRegisterModal();
+
+  } catch (error) {
+    console.error("Initialization error:", error);
   }
-
-  const productList = new ProductList("Tents", dataSource, element);
-  productList.renderList(products); //  usamos renderList directamente
 }
+
+// Wait for DOM to be ready
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+});
 
 // modal register
 function showRegisterModal() {
@@ -51,5 +74,3 @@ function showRegisterModal() {
 }
 
 showRegisterModal();
-
-init();

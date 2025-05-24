@@ -22,8 +22,32 @@ export default class ProductDetails {
 
   addProductToCart() {
     const cartItems = getLocalStorage("so-cart") || [];
-    cartItems.push(this.product);
+    const quantity = parseInt(document.getElementById("quantity").value) || 1;
+    
+    // Check if product already exists in cart
+    const existingItem = cartItems.find(item => item.Id === this.product.Id);
+    
+    if (existingItem) {
+      existingItem.quantity = (existingItem.quantity || 1) + quantity;
+    } else {
+      this.product.quantity = quantity;
+      cartItems.push(this.product);
+    }
+    
     setLocalStorage("so-cart", cartItems);
+    
+    // Show confirmation message
+    this.showAddToCartConfirmation(quantity);
+  }
+
+  showAddToCartConfirmation(quantity) {
+    const popup = document.createElement('div');
+    popup.className = 'cart-notification';
+    popup.textContent = `${quantity} item${quantity > 1 ? 's' : ''} added to cart`;
+    document.body.appendChild(popup);
+
+    // Remove popup after 3 seconds
+    setTimeout(() => popup.remove(), 3000);
   }
 
   renderProductDetails() {
@@ -42,8 +66,25 @@ function productDetailsTemplate(product) {
   document.getElementById('productPrice').textContent = product.FinalPrice;
   document.getElementById('productColor').textContent = product.Colors[0].ColorName;
   document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
-
+  
   document.getElementById('addToCart').dataset.id = product.Id;
+  // Add quantity input before add to cart button
+  const addToCartDiv = document.getElementById('addToCart').parentElement;
+  const quantityHTML = `
+    <div class="product-detail__quantity">
+      <label for="quantity">Quantity:</label>
+      <input 
+        type="number" 
+        id="quantity" 
+        name="quantity" 
+        min="1" 
+        value="1" 
+        class="quantity-input"
+      >
+    </div>
+  `;
+  addToCartDiv.insertAdjacentHTML('beforebegin', quantityHTML);
+
 }
 
 // ************* Alternative Display Product Details Method *******************

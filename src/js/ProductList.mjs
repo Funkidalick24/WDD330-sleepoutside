@@ -3,7 +3,7 @@ import { renderListWithTemplate } from "./utils.mjs";
 function productCardTemplate(product) {
   return `
     <li class="product-card">
-      <a href="/src/product_pages/index.html?id=${product.Id}">
+      <a href="/product_pages/index.html?id=${product.Id}">
         <img src="${product.Images.PrimaryMedium}" alt="${product.Name}">
         <h2>${product.Brand.Name}</h2>
         <h3>${product.Name}</h3>
@@ -38,9 +38,9 @@ export default class ProductList {
         const id = e.target.dataset.id;
         const product = await this.dataSource.findProductById(id);
 
-        const cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
         cart.push(product);
-        localStorage.setItem("so-cart", JSON.stringify(cart));
+        localStorage.setItem("cart", JSON.stringify(cart));
 
         alert(`${product.Name} added to cart`);
       });
