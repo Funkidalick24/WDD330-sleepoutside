@@ -6,6 +6,7 @@
     <title>SleepOutside | Home</title>
     <link rel="stylesheet" href="/css/style.css" />
     <script src="js/main.js" type="module"></script>
+    <script src="./js/newsletterSignup.js" defer></script>
   </head>
 
   <body>
@@ -101,9 +102,10 @@
             Subscribe to our newsletter for the latest deals, tips, and outdoor
             adventures!
           </p>
-          <form class="newsletter-form">
+          <form id="newsletterForm" class="newsletter-form">
             <input
               type="email"
+              id="newsletterEmail"
               placeholder="Enter your email address"
               required
               aria-label="Email address for newsletter"
@@ -113,6 +115,7 @@
           <p class="small-text">
             We respect your privacy. Unsubscribe at any time.
           </p>
+          <div id="newsletterMessage" class="newsletter-message hidden"></div>
         </div>
       </section>
 
