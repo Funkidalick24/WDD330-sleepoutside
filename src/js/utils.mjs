@@ -12,12 +12,7 @@ export function getLocalStorage(key) {
 // save data to local storage
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
-  // Update cart count whenever we modify localStorage
-  if (key === "so-cart") {
-    updateCartCount();
-  }
 }
-
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
@@ -32,29 +27,47 @@ export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const product = urlParams.get(param);
-  return product;
+  return product
 }
-export function renderListWithTemplate(
-  templateFn,
-  parentElement,
-  list,
-  position = "afterbegin",
-  clear = false
-) {
+
+export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
+  const htmlStrings = list.map(template);
+  // if clear is true we need to clear out the contents of the parent.
   if (clear) {
     parentElement.innerHTML = "";
   }
-  const htmlStrings = list.map(templateFn);
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
-export function updateCartCount() {
-  const cartItems = JSON.parse(localStorage.getItem("so-cart")) || [];
-  const cartCount = document.querySelector(".cart-count");
-  const itemCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  
-  if (cartCount) {
-    cartCount.textContent = itemCount > 99 ? "99+" : itemCount;
-    // Only show if we have items
-    cartCount.style.display = itemCount > 0 ? "block" : "none";
+
+/// Función para cargar templates HTML
+export async function loadTemplate(path) {
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Failed to load template: ${path}`);
+  }
+  return await response.text();
+}
+
+// Función para renderizar un template (sin loop)
+export function renderWithTemplate(template, parentElement, data = null, callback = null) {
+  parentElement.innerHTML = template;
+  if (callback && data) {
+    callback(data);
+  }
+}
+
+// Función principal para cargar header/footer
+export async function loadHeaderFooter() {
+  try {
+    // Cargar templates
+    const headerTemplate = await loadTemplate("/partials/header.html");
+    const footerTemplate = await loadTemplate("/partials/footer.html");
+
+    // Renderizar
+    renderWithTemplate(headerTemplate, document.querySelector("#main-header"));
+    renderWithTemplate(footerTemplate, document.querySelector("#main-footer"));
+
+  } catch (error) {
+    console.error("Error loading header/footer:", error);
   }
 }

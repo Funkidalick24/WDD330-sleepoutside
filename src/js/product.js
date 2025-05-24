@@ -1,97 +1,27 @@
-
-import { setLocalStorage, getParam } from "./utils.mjs";
-
+import { getParam, getLocalStorage, setLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
 
-const dataSource = new ProductData("tents");
-const productId = getParam("product");
-const product = new ProductDetails(productId, dataSource);
+const dataSource = new ProductData();
+const productID = getParam("id");
 
-product.init();
-
-// console.log(dataSource.findProductById(productId));
-
-// const addToCartButton = document.getElementById("addToCart");
-// if (addToCartButton) {
-//   addToCartButton.addEventListener("click", addToCartHandler);
-// }
-
-// // add to cart button event handler
-// async function addToCartHandler(e) {
-//   try {
-//     if (!e.target.dataset.id) {
-//       throw new Error("Product ID not found");
-//     }
-//     const product = await dataSource.findProductById(e.target.dataset.id);
-//     if (product) {
-//       addProductToCart(product);
-//       console.log("Product added to cart successfully");
-//     }
-//   } catch (error) {
-//     console.error("Error adding product to cart:", error);
-//   }
-// }
+const product = new ProductDetails(productID, dataSource);
 
 function addProductToCart(product) {
-  let cart = JSON.parse(localStorage.getItem("so-cart")) || [];
-  cart.push(product);
-  setLocalStorage("so-cart", cart);
+  const cartItems = getLocalStorage("so-cart") || []; // get cart array of items from local storage if null set to empty array
+  cartItems.push(product);
+  setLocalStorage("so-cart", cartItems);
 }
 
+// add to cart button event handler
 async function addToCartHandler(e) {
-  try {
-    const productId = getProductId();
-    if (!productId) {
-      throw new Error("Product ID not found");
-    }
-    const product = await dataSource.findProductById(productId);
-    if (product) {
-      addProductToCart(product);
-      console.log("Product added to cart successfully");
-    }
-  } catch (error) {
-    console.error("Error adding product to cart:", error);
-  }
+  const product = await dataSource.findProductById(e.target.dataset.id);
+  addProductToCart(product);
 }
 
-function getProductId() {
-  return (
-    getParam("id") ||
-    document.getElementById("addToCart")?.dataset.id ||
-    window.location.pathname.split("/").pop().split(".")[0]
-  );
-}
+// add listener to Add to Cart button
+document
+  .getElementById("addToCart")
+  .addEventListener("click", addToCartHandler);
 
-async function displayProductDetails() {
-  const productId = getProductId();
-  if (!productId) {
-    console.error("No product ID found");
-    return;
-  }
-
-  try {
-    const product = await dataSource.findProductById(productId);
-    if (!product) {
-      console.error("Product not found");
-      return;
-    }
-
-    updateProductDisplay(product);
-    addDiscountBadge(product);
-  } catch (error) {
-    console.error("Error loading product details:", error);
-  }
-}
-
-function updateProductDisplay(product) {
-  safeUpdateElement(".product-name", product.Name);
-  safeUpdateElement(
-    ".product-brand",
-    product.Brand?.Name || product.Brand || "",
-  );
-  safeUpdateElement(
-    ".product-description",
-    product.Description || "No description available",
-  );
-
+product.init();
