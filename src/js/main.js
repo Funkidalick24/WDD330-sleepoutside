@@ -10,11 +10,21 @@ async function init() {
     // Update cart count
     updateCartCount();
 
-    // Get product list element
+    // Get product list element with more specific error
     const element = document.querySelector(".product-list");
     if (!element) {
-      console.error("Product list element not found");
-      return;
+      console.error("Product list element not found. Please ensure there is an element with class 'product-list' in your HTML.");
+      
+      // Create element if missing (optional fallback)
+      const main = document.querySelector("main");
+      if (main) {
+        const productList = document.createElement("div");
+        productList.className = "product-list";
+        main.appendChild(productList);
+        element = productList;
+      } else {
+        return;
+      }
     }
 
     // Initialize product data
