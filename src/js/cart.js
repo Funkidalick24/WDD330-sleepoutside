@@ -16,3 +16,11 @@ function checkoutCart() {
 }
 
 checkoutCart();
+
+// Add this after any cart modifications (remove item, update quantity, etc.)
+function removeItem(e) {
+  // ...existing code...
+  setLocalStorage("so-cart", cartItems);
+  updateCartCount();
+  // ...existing code...
+}

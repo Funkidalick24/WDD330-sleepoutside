@@ -21,11 +21,11 @@ export function setLocalStorage(key, data) {
 
 export function updateCartCount() {
   const cartItems = getLocalStorage("so-cart") || [];
-  const cartCount = document.querySelector(".cart-count");
-  
+  const cartCount = document.getElementById("cart-count");
   if (cartCount) {
-    const itemCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    cartCount.textContent = itemCount > 99 ? "99+" : itemCount;
+    const itemCount = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+    // Format count to show 99+ if over 99
+    cartCount.textContent = itemCount > 99 ? "99+" : itemCount.toString();
     cartCount.style.display = itemCount > 0 ? "block" : "none";
   }
 }
@@ -85,34 +85,21 @@ export function renderWithTemplate(template, parentElement, data = null, callbac
 
 // Función principal para cargar header/footer
 export async function loadHeaderFooter() {
-  try {
-    console.log("Starting header/footer load...");
-    
-    // Load templates
-    const headerTemplate = await loadTemplate("/partials/header.html");
-    const footerTemplate = await loadTemplate("/partials/footer.html");
-
-    // Get elements and verify they exist
-    const headerElement = document.getElementById("main-header");
-    const footerElement = document.getElementById("main-footer");
-
-    if (!headerElement) {
-      throw new Error('Header element with id "main-header" not found in the DOM');
-    }
-
-    if (!footerElement) {
-      throw new Error('Footer element with id "main-footer" not found in the DOM');
-    }
-
-    renderWithTemplate(headerTemplate, headerElement);
-    renderWithTemplate(footerTemplate, footerElement);
-
-    console.log("Header and footer loaded successfully");
-
-  } catch (error) {
-    console.error("Error loading header/footer:", error.message);
-    
+  const headerTemplate = await loadTemplate("../partials/header.html");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
+  
+  const headerElement = document.getElementById("main-header");
+  const footerElement = document.getElementById("main-footer");
+  
+  if (!headerElement || !footerElement) {
+    throw new Error("Header or footer element not found in the DOM");
   }
+  
+  headerElement.innerHTML = headerTemplate;
+  footerElement.innerHTML = footerTemplate;
+  
+  // Update cart count after header is loaded
+  updateCartCount();
 }
 
 // Add this to update cart count when items are removed
