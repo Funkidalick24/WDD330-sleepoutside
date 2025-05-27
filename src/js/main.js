@@ -2,6 +2,13 @@ import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 import { loadHeaderFooter, updateCartCount } from "./utils.mjs";
 
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'so-cart') {
+    updateCartCount();
+  }
+});
+
 async function init() {
   try {
     // Load header and footer first

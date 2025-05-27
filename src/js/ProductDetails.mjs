@@ -35,19 +35,22 @@ export default class ProductDetails {
     }
     
     setLocalStorage("so-cart", cartItems);
+    updateCartCount();
     
-    // Show confirmation message
-    this.showAddToCartConfirmation(quantity);
-  }
-
-  showAddToCartConfirmation(quantity) {
-    const popup = document.createElement('div');
-    popup.className = 'cart-notification';
-    popup.textContent = `${quantity} item${quantity > 1 ? 's' : ''} added to cart`;
-    document.body.appendChild(popup);
-
-    // Remove popup after 3 seconds
-    setTimeout(() => popup.remove(), 3000);
+    // Add alert message
+    const alertMessage = document.createElement("div");
+    alertMessage.className = "alert-message";
+    alertMessage.innerHTML = `
+      <p>${this.product.Name} added to cart!</p>
+    `;
+    
+    // Add to page
+    document.querySelector("main").appendChild(alertMessage);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      alertMessage.remove();
+    }, 3000);
   }
 
   renderProductDetails() {
