@@ -2,9 +2,8 @@ import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 import { loadHeaderFooter, updateCartCount } from "./utils.mjs";
 
-
-window.addEventListener('storage', (e) => {
-  if (e.key === 'so-cart') {
+window.addEventListener("storage", (e) => {
+  if (e.key === "so-cart") {
     updateCartCount();
   }
 });
@@ -13,15 +12,17 @@ async function init() {
   try {
     // Load header and footer first
     await loadHeaderFooter();
-    
+
     // Update cart count
     updateCartCount();
 
     // Get product list element with more specific error
     const element = document.querySelector(".product-list");
     if (!element) {
-      console.error("Product list element not found. Please ensure there is an element with class 'product-list' in your HTML.");
-      
+      console.error(
+        "Product list element not found. Please ensure there is an element with class 'product-list' in your HTML.",
+      );
+
       // Create element if missing (optional fallback)
       const main = document.querySelector("main");
       if (main) {
@@ -43,7 +44,7 @@ async function init() {
     const searchQuery = urlParams.get("search");
     if (searchQuery) {
       products = products.filter((product) =>
-        product.Name.toLowerCase().includes(searchQuery.toLowerCase())
+        product.Name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -53,7 +54,6 @@ async function init() {
 
     // Initialize modal if needed
     showRegisterModal();
-
   } catch (error) {
     console.error("Initialization error:", error);
   }
