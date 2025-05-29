@@ -1,4 +1,4 @@
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 import { loadHeaderFooter, updateCartCount } from "./utils.mjs";
 
@@ -18,7 +18,7 @@ async function init() {
     updateCartCount();
 
     // Get product list element with more specific error
-    const element = document.querySelector(".product-list");
+    let element = document.querySelector(".product-list"); // Changed from const to let
     if (!element) {
       console.error("Product list element not found. Please ensure there is an element with class 'product-list' in your HTML.");
       
@@ -29,13 +29,11 @@ async function init() {
         productList.className = "product-list";
         main.appendChild(productList);
         element = productList;
-      } else {
-        return;
       }
     }
 
     // Initialize product data
-    const dataSource = new ProductData("tents");
+    const dataSource = new ExternalServices("tents");
     let products = await dataSource.getData();
 
     // Handle search functionality
