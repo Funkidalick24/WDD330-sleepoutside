@@ -1,72 +1,64 @@
-export default class CheckoutProcess{
-    constructor(key, outputSelector){
+export default class CheckoutProcess {
+    constructor(key, outputSelector) {
         this.key = key;
         this.outputSelector = outputSelector;
         this.list = [];
         this.itemTotal = 0;
         this.shipping = 0;
         this.tax = 0;
-        this.orderTotal - 0;
-    
+        this.orderTotal = 0;  
     }
 
-    Init(){
+    init() {
         this.list = this.packageItems(JSON.parse(localStorage.getItem(this.key)));
         this.calculateItemSummary();
+        this.calculateOrderTotal();  // Add this line to calculate all totals
     }
-    
-    calculateItemSummary(){
-        const summaryEl = document.querySelector(
-            this.outputSelector + ' #cartTotal'
-        );
 
-        const itemNumEl = document.querySelector(
-            this.outputSelector + ' #num-items'
-        );
-
-        if(summaryEl && itemNumEl){
-            itemNumEl.innerHTML = this.list.length;
-            
-            this.itemTotal = this.list.reduce(total, item  => {
-                return total + (item.price * item.quantity)
-            }, 0
-);
-
-        summaryEl.innerText = '$' + this.itemTotal.toFixed(2);
+    calculateItemSummary() {
+        const summaryElement = document.querySelector(this.outputSelector + " #cartTotal");
+        const itemNumElement = document.querySelector(this.outputSelector + " #num-items");
+        
+        if (summaryElement && itemNumElement) {
+            itemNumElement.innerText = this.list.length;
+            this.itemTotal = this.list.reduce((total, item) => 
+                total + item.price * item.quantity, 0);
+            summaryElement.innerText = `$${this.itemTotal.toFixed(2)}`;
         }
-            
-     
     }
 
-    calculateOrderTotal(){
-        this.shipping = 10 + (this.list.length-1) *2;
-        this.tax = (this.itemTotal*0.06).toFixed(2);
-        this.orderTotal =(
-            parseFloat(this.itemTotal)+
-            parseFloat(this.shipping)+
-            parseFloat(this.tax)
-        ).toFixed(2);
+    calculateOrderTotal() {
+        // Calculate total quantity of all items
+        const totalQuantity = this.list.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        // Base shipping is $10 for first item
+        this.shipping = 10;
+        
+        // Add $2 for each additional item based on total quantity
+        if (totalQuantity > 1) {
+            this.shipping += (totalQuantity - 1) * 2;
+        }
 
+        // Calculate tax and total
+        this.tax = (this.itemTotal * 0.06);
+        this.orderTotal = parseFloat(this.itemTotal) + 
+                         parseFloat(this.shipping) + 
+                         parseFloat(this.tax);
+
+        // Display the updated totals
         this.displayOrderTotals();
     }
 
-    displayOrderTotals(){
-     const shipping = document.querySelector(
-        this.outputSelector +' #shipping'
-     );
-     const tax = document.querySelector(
-        this.outputSelector + ' #tax'
-     );
-
-     const orderTotal = document.querySelector(
-        this.outputSelector + ' #orderTotal'
-     );
-
-     if(shipping && tax && orderTotal){
-        shipping.innerText = '$' + this.shipping;
-         tax.innerText = '$' + this.tax.toFixed(2);
-          orderTotal.innerText = '$' + this.orderTotal.toFixed(2);
-     }
+    displayOrderTotals() {
+        const shipping = document.querySelector(this.outputSelector + " #shipping");
+        const tax = document.querySelector(this.outputSelector + " #tax");
+        const orderTotal = document.querySelector(this.outputSelector + " #orderTotal");
+        
+        if (shipping && tax && orderTotal) {
+            shipping.innerText = `$${this.shipping.toFixed(2)}`;
+            tax.innerText = `$${this.tax.toFixed(2)}`;
+            orderTotal.innerText = `$${this.orderTotal.toFixed(2)}`;
+        }
     }
 
      formDataToJSON(formEl) {
@@ -88,7 +80,7 @@ export default class CheckoutProcess{
     }
 
     packageItems(items) {
-        debugger;
+    
 
         if (!items || items.length === 0) {
             console.log("No items to process!");
@@ -108,7 +100,7 @@ export default class CheckoutProcess{
 
 
     async checkout() {
-        debugger;
+       
         const formEl = document.forms["checkout-form"];
 
         const json = this.formDataToJSON(formEl);

@@ -106,3 +106,122 @@ export async function loadHeaderFooter() {
 document.addEventListener("cartUpdated", () => {
   updateCartCount();
 });
+
+export function alertMessage(message, scroll = true) {
+  debugger;
+  // create element to hold our alert
+  const alert = document.createElement("div");
+  // add a class to style the alert
+  alert.classList.add("alert");
+  // set the contents. You should have a message and an X or something the user can click on to remove
+  alert.innerHTML = `
+    <span class="alert-message">${message}</span>
+    <span class="alert-close" style="cursor: pointer;">&times;</span>
+  `;
+
+  // add a listener to the alert to see if they clicked on the X
+  // if they did then remove the child
+  alert.addEventListener("click", function (e) {
+    if (e.target.classList.contains("alert-close")) { // how can we tell if they clicked on our X or on something else?  hint: check out e.target.tagName or e.target.innerText
+      main.removeChild(this);
+    }
+  })
+  // add the alert to the top of main
+  const main = document.querySelector("main");
+  main.prepend(alert);
+  // make sure they see the alert by scrolling to the top of the window
+  //we may not always want to do this...so default to scroll=true, but allow it to be passed in and overridden.
+  if (scroll)
+    window.scrollTo(0, 0);
+}
+
+export function getFormValidationErrors(form) {
+  const invalidFields = [];
+  for (let element of form.elements) {
+    if (!element.validity.valid) {
+      invalidFields.push(element.name || element.id || "Unnamed field");
+    }
+  }
+  return `Invalid fields: ${invalidFields.join(", ")}`;
+}
+
+export function loadCarouselSlider(data) {
+
+  debugger;
+  console.log(data);
+  const slides = document.querySelectorAll(".product-card");
+  let slideIndex = 0;
+  let intervalId = null;
+
+  function initializeSlider() {
+    // debugger;
+    slides[slideIndex].classList.add("displaySlide");
+    intervalId = setInterval(nextSlide, 5000);
+  }
+
+  function showSlide(index) {
+    // debugger;
+
+    console.log("slideIndex: ", index);
+    console.log("slidesLength: ", slides.length);
+
+    if (index >= slides.length) {
+      // Loop back to the first slide
+      slideIndex = 0;
+
+    } else if (index < 0) {
+      // Go to the last slide
+      slideIndex = slides.length - 1;
+    } else {
+      slideIndex = index; // Valid index within bounds
+    }
+
+    // First, hide the slides
+    slides.forEach(slide => {
+      slide.classList.remove("displaySlide");
+    });
+    // Add the displaySlide class to the active slide
+    slides[slideIndex].classList.add("displaySlide");
+
+
+  }
+  console.log("Slides", slides);
+
+
+ function prevSlide() {
+
+    // Move to the previous slide
+    slideIndex--;
+    showSlide(slideIndex);
+  }
+
+  // Function to go to the next slide
+  function nextSlide() {
+
+    // Move to the next slide
+    slideIndex++;
+    showSlide(slideIndex);
+
+  }
+
+  const prevBtn = document.querySelector("#prev");
+  const nextBtn = document.querySelector("#next");
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      // Show previous slide, when clicked
+      prevSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      // Show next slide, when clicked
+      nextSlide();
+
+    });
+  }
+
+  initializeSlider();
+}
+

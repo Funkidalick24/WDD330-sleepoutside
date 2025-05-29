@@ -1,5 +1,5 @@
 
-// ExternalServices.mjs (previously ProductData.mjs) - Class template for handling product data.
+// ExternalServices.mjs (previously ExternalServices.mjs) - Class template for handling product data.
 // - Responsible for finding a product by its Id.
 // - Vite uses the VITE_SERVER_URL environment variable to inject the actual server URL
 // into the code, as declared in Netlify.
