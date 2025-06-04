@@ -1,10 +1,10 @@
-import { loadHeaderFooter, getWishlist, removeFromWishlist, addToCart, alertMessage } from "./utils.mjs";
+import { loadHeaderFooter, getWishlist, removeFromWishlist, addToCart } from "./utils.mjs";
 
 loadHeaderFooter();
 
 function renderWishlist() {
+  const wishlistContainer = document.querySelector(".wishlist-products");
   const wishlist = getWishlist();
-  const wishlistContainer = document.querySelector('.wishlist-products');
 
   if (!wishlist || wishlist.length === 0) {
     wishlistContainer.innerHTML = `
