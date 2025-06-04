@@ -1,4 +1,12 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { 
+  getLocalStorage, 
+  setLocalStorage, 
+  updateCartCount, 
+  isInWishlist,
+  addToWishlist,
+  removeFromWishlist,
+  alertMessage 
+} from "./utils.mjs";
 
 export default class ProductDetails {
 
@@ -18,6 +26,8 @@ export default class ProductDetails {
     document
       .getElementById('addToCart')
       .addEventListener('click', this.addProductToCart.bind(this));
+    document.getElementById('addToWishlist')
+      .addEventListener('click', this.toggleWishlist.bind(this));
   }
 
   addProductToCart() {
@@ -53,8 +63,52 @@ export default class ProductDetails {
     }, 3000);
   }
 
+  toggleWishlist() {
+    const isInList = isInWishlist(this.product.Id);
+    
+    if (isInList) {
+      removeFromWishlist(this.product.Id);
+      alertMessage(`${this.product.Name} removed from wishlist`);
+    } else {
+      addToWishlist(this.product);
+      alertMessage(`${this.product.Name} added to wishlist`);
+    }
+    
+    // Re-render to update the wishlist button state
+    this.renderProductDetails();
+  }
+
   renderProductDetails() {
-    productDetailsTemplate(this.product);
+    const template = `
+      <section class="product-detail">
+        <h3>${this.product.Brand.Name}</h3>
+        <h2 class="divider">${this.product.NameWithoutBrand}</h2>
+        <img class="divider" src="${this.product.Images.PrimaryLarge}" 
+          alt="${this.product.NameWithoutBrand}" />
+        <p class="product-card__price">$${this.product.FinalPrice}</p>
+        <p class="product__description">${this.product.DescriptionHtmlSimple}</p>
+        <div class="product-detail__quantity">
+          <label for="quantity">Quantity:</label>
+          <input 
+            type="number" 
+            id="quantity" 
+            name="quantity" 
+            min="1" 
+            value="1" 
+            class="quantity-input"
+          >
+        </div>
+        <div class="product-detail__actions">
+          <button id="addToCart" data-id="${this.product.Id}">Add to Cart</button>
+          <button id="addToWishlist" class="wishlist-button ${isInWishlist(this.product.Id) ? 'in-wishlist' : ''}" 
+            data-id="${this.product.Id}">
+            <i class="fa${isInWishlist(this.product.Id) ? 's' : 'r'} fa-star"></i>
+            ${isInWishlist(this.product.Id) ? 'In Wishlist' : 'Add to Wishlist'}
+          </button>
+        </div>
+      </section>`;
+
+    document.querySelector(".product-detail").innerHTML = template;
   }
 }
 
@@ -100,11 +154,14 @@ function productDetailsTemplate(product) {
 //       alt="${product.NameWithoutBrand}"
 //     />
 //     <p class="product-card__price">$${product.FinalPrice}</p>
-//     <p class="product__color">${product.Colors[0].ColorName}</p>
-//     <p class="product__description">
-//     ${product.DescriptionHtmlSimple}
-//     </p>
-//     <div class="product-detail__add">
+//     <p class="product__description">${product.DescriptionHtmlSimple}</p>
+//     <div class="product-detail__actions">
 //       <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
-//     </div></section>`;
+//       <button id="addToWishlist" class="wishlist-button ${isInWishlist(product.Id) ? 'in-wishlist' : ''}" 
+//         data-id="${product.Id}">
+//         <i class="fa${isInWishlist(product.Id) ? 's' : 'r'} fa-star"></i>
+//         ${isInWishlist(product.Id) ? 'In Wishlist' : 'Add to Wishlist'}
+//       </button>
+//     </div>
+//   </section>`;
 // }

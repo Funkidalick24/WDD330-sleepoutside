@@ -98,8 +98,9 @@ export async function loadHeaderFooter() {
   headerElement.innerHTML = headerTemplate;
   footerElement.innerHTML = footerTemplate;
   
-  // Update cart count after header is loaded
+  // Update both cart and wishlist counts after header is loaded
   updateCartCount();
+  updateWishlistDisplay();
 }
 
 // Add this to update cart count when items are removed
@@ -223,5 +224,65 @@ export function loadCarouselSlider(data) {
   }
 
   initializeSlider();
+}
+
+// Wishlist utilities
+export function getWishlist() {
+  return JSON.parse(localStorage.getItem("so-wishlist")) || [];
+}
+
+export function setWishlist(wishlist) {
+  localStorage.setItem("so-wishlist", JSON.stringify(wishlist));
+}
+
+export function updateWishlistDisplay() {
+  const wishlist = getWishlist();
+  // Update wishlist count in header if it exists
+  const wishlistCount = document.querySelector('.wishlist-count');
+  if (wishlistCount) {
+    wishlistCount.textContent = wishlist.length;
+    wishlistCount.style.display = wishlist.length > 0 ? 'block' : 'none';
+  }
+}
+
+export function addToWishlist(product) {
+  const wishlist = getWishlist();
+  if (!wishlist.find(item => item.Id === product.Id)) {
+    wishlist.push(product);
+    setWishlist(wishlist);
+    updateWishlistDisplay(); // Update display after adding
+    alertMessage(`${product.Name} added to wishlist`);
+  }
+}
+
+export function removeFromWishlist(productId) {
+  const wishlist = getWishlist();
+  const updatedWishlist = wishlist.filter(item => item.Id !== productId);
+  setWishlist(updatedWishlist);
+  updateWishlistDisplay(); // Update display after removing
+  const product = wishlist.find(item => item.Id === productId);
+  if (product) {
+    alertMessage(`${product.Name} removed from wishlist`);
+  }
+}
+
+export function isInWishlist(productId) {
+  const wishlist = getWishlist();
+  return wishlist.some(item => item.Id === productId);
+}
+
+export function addToCart(product) {
+  const cart = getLocalStorage("so-cart") || [];
+  const existingItem = cart.find(item => item.Id === product.Id);
+  
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    product.quantity = 1;
+    cart.push(product);
+  }
+  
+  setLocalStorage("so-cart", cart);
+  alertMessage(`${product.Name} added to cart!`);
 }
 
