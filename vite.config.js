@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
   root: "src/",
   base: "/",
-
   build: {
     outDir: "../dist",
     emptyOutDir: true,
@@ -17,7 +16,16 @@ export default defineConfig({
         product_listing: resolve(__dirname, "src/product_listing/index.html"),
         success: resolve(__dirname, "src/checkout/success.html"),
         wishlist: resolve(__dirname, "src/wishlist/index.html")
-      }
+      },
+      external: [
+        '/js/newsletterSignup.js',
+        '/js/wishlist.js'
+      ]
+    }
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
     }
   }
 });
