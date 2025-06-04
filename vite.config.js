@@ -17,6 +17,10 @@ export default defineConfig({
         success: resolve(__dirname, "src/checkout/success.html"),
         wishlist: resolve(__dirname, "src/wishlist/index.html")
       }
+    },
+    target: 'esnext',
+    commonjsOptions: {
+      transformMixedEsModules: true
     }
   }
 });
