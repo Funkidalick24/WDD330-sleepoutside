@@ -1188,7 +1188,6 @@ nav ul li a[href*="wishlist"]:hover {
   transition: transform 0.2s ease;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .discount-badge {
     top: 50%;
