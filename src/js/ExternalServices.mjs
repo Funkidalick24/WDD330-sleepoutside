@@ -1,4 +1,3 @@
-
 // ExternalServices.mjs (previously ExternalServices.mjs) - Class template for handling product data.
 // - Responsible for finding a product by its Id.
 // - Vite uses the VITE_SERVER_URL environment variable to inject the actual server URL
@@ -26,7 +25,6 @@ const baseURL = import.meta.env.VITE_SERVER_URL;
 //   constructor(category) {
 //     //this.category = category; // comment out this line
 //     //this.path = `${baseURL}${this.category}.json`; // comment out this line
-
 
 //   }
 //   async getData(category) {
@@ -60,7 +58,6 @@ const baseURL = import.meta.env.VITE_SERVER_URL;
 //     //     description: product.DescriptionHtmlSimple,
 //     //     dataId: product.Id,
 
-
 //     //   };
 //     // } else {
 //     //   return null;  // Return null if product not found
@@ -74,19 +71,30 @@ function convertToJson(res) {
   } else {
     throw new Error("Bad Response");
   }
-
 }
 
 export default class ExternalServices {
   constructor(category) {
     // this.category = category;
-    // this.path = `../json/${this.category}.json`;
+    this.basePath = `/json/`;
   }
+
   async getData(category) {
-    const response = await fetch(baseURL + `products/search/${category}`);
-    const data = await convertToJson(response);
-    return data.Result;
+    try {
+      const response = await fetch(`${this.basePath}${category}.json`);
+      const data = await convertToJson(response);
+
+      // Debug log to verify data structure
+      console.log("API Response Data:", data);
+
+      // Return the Result array if it exists, otherwise return the data directly
+      return data.Result || data;
+    } catch (err) {
+      console.error("Error loading products:", err);
+      throw err;
+    }
   }
+  
   async findProductById(id) {
     const response = await fetch(baseURL + `product/${id}`);
     const data = await convertToJson(response);
