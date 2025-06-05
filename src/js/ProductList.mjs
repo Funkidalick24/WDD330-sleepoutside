@@ -33,11 +33,33 @@ export default class ProductList {
       }
 
       this.renderList();
-      this.addWishlistListeners(); // Fixed method name
+      this.addWishlistListeners();
     } catch (error) {
       console.error("Failed to load products:", error);
       this.showErrorMessage(error.message);
     }
+  }
+
+  // Helper method to calculate discount information
+  getDiscountInfo(product) {
+    const finalPrice = parseFloat(product.FinalPrice) || 0;
+    const suggestedPrice = parseFloat(product.SuggestedRetailPrice) || 0;
+
+    if (suggestedPrice > 0 && finalPrice > 0 && finalPrice < suggestedPrice) {
+      const discountAmount = suggestedPrice - finalPrice;
+      const discountPercentage = Math.round(
+        (discountAmount / suggestedPrice) * 100,
+      );
+
+      return {
+        isDiscounted: true,
+        originalPrice: suggestedPrice,
+        discountAmount: discountAmount,
+        discountPercentage: discountPercentage,
+      };
+    }
+
+    return { isDiscounted: false };
   }
 
   addWishlistListeners() {
@@ -67,15 +89,25 @@ export default class ProductList {
     if (!this.listElement || !Array.isArray(this.products)) return;
 
     this.listElement.innerHTML = this.products
-      .map(
-        (product) => `
-      <li class="product-card">
+      .map((product) => {
+        const discountInfo = this.getDiscountInfo(product);
+
+        return `
+      <li class="product-card ${discountInfo.isDiscounted ? "discounted" : ""}">
         <div class="card-header">
           <a href="/product_pages/index.html?product=${product.Id}">
             <img src="${product.Images?.PrimaryMedium || "/images/placeholder.jpg"}" 
                  alt="${product.Name}" 
                  loading="lazy">
           </a>
+          ${
+            discountInfo.isDiscounted
+              ? `<div class="discount-badge">
+              <span class="discount-percentage">-${discountInfo.discountPercentage}%</span>
+              <span class="discount-label">SALE</span>
+            </div>`
+              : ""
+          }
           <button class="wishlist-star ${isInWishlist(product.Id) ? "in-wishlist" : ""}" 
                   data-id="${product.Id}">
             <i class="fa${isInWishlist(product.Id) ? "s" : "r"} fa-star"></i>
@@ -84,11 +116,21 @@ export default class ProductList {
         <a href="/product_pages/index.html?product=${product.Id}">
           <h2 class="card__brand">${product.Brand?.Name || "Unknown Brand"}</h2>
           <h3 class="card__name">${product.NameWithoutBrand || product.Name}</h3>
-          <p class="product-card__price">$${product.FinalPrice || product.ListPrice || "N/A"}</p>
+          <div class="price-container">
+            ${
+              discountInfo.isDiscounted
+                ? `<p class="product-card__price">
+                <span class="current-price">$${product.FinalPrice || product.ListPrice || "N/A"}</span>
+                <span class="original-price">$${discountInfo.originalPrice.toFixed(2)}</span>
+              </p>
+              <p class="savings-text">You save $${discountInfo.discountAmount.toFixed(2)}</p>`
+                : `<p class="product-card__price">$${product.FinalPrice || product.ListPrice || "N/A"}</p>`
+            }
+          </div>
         </a>
       </li>
-    `,
-      )
+    `;
+      })
       .join("");
   }
 
