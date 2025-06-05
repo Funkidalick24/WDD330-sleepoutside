@@ -15,12 +15,12 @@ export default defineConfig({
         product: resolve(__dirname, "src/product_pages/index.html"),
         product_listing: resolve(__dirname, "src/product_listing/index.html"),
         success: resolve(__dirname, "src/checkout/success.html"),
-        wishlist: resolve(__dirname, "src/wishlist/index.html")
-      }
+        wishlist: resolve(__dirname, "src/wishlist/index.html"),
+      },
     },
-    target: 'esnext',
+    target: "esnext",
     commonjsOptions: {
-      transformMixedEsModules: true
-    }
-  }
+      transformMixedEsModules: true,
+    },
+  },
 });

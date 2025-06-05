@@ -1,4 +1,9 @@
-import { loadHeaderFooter, getWishlist, removeFromWishlist, addToCart } from "./utils.mjs";
+import {
+  loadHeaderFooter,
+  getWishlist,
+  removeFromWishlist,
+  addToCart,
+} from "./utils.mjs";
 
 loadHeaderFooter();
 
@@ -15,7 +20,9 @@ function renderWishlist() {
     return;
   }
 
-  wishlistContainer.innerHTML = wishlist.map(item => `
+  wishlistContainer.innerHTML = wishlist
+    .map(
+      (item) => `
     <li class="wishlist-card">
       <img src="${item.Images.PrimaryMedium}" alt="${item.Name}"/>
       <div class="wishlist-card__content">
@@ -28,17 +35,19 @@ function renderWishlist() {
         </div>
       </div>
     </li>
-  `).join("");
+  `,
+    )
+    .join("");
 
   addWishlistListeners();
 }
 
 function addWishlistListeners() {
   // Add to cart button listeners
-  document.querySelectorAll(".add-to-cart").forEach(button => {
+  document.querySelectorAll(".add-to-cart").forEach((button) => {
     button.addEventListener("click", (e) => {
       const productId = e.target.dataset.id;
-      const product = getWishlist().find(item => item.Id === productId);
+      const product = getWishlist().find((item) => item.Id === productId);
       if (product) {
         addToCart(product);
         removeFromWishlist(productId);
@@ -48,7 +57,7 @@ function addWishlistListeners() {
   });
 
   // Remove from wishlist button listeners
-  document.querySelectorAll(".remove-from-wishlist").forEach(button => {
+  document.querySelectorAll(".remove-from-wishlist").forEach((button) => {
     button.addEventListener("click", (e) => {
       const productId = e.target.dataset.id;
       removeFromWishlist(productId);

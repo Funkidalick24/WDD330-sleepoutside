@@ -7,10 +7,8 @@ import {
 } from "./utils.mjs";
 import CheckoutProcess from "./CheckoutProcess.mjs";
 
-
 loadHeaderFooter();
 document.addEventListener("DOMContentLoaded", () => {
-  
   const myCheckout = new CheckoutProcess("so-cart", ".checkout-summary");
   const myForm = document.forms["checkout-form"];
 
@@ -20,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const zipInput = document.querySelector("#zipcode");
   const checkoutSubmitButton = document.querySelector("#btn-checkout");
   const creditcardNum = document.querySelector("#creditcard-number");
-
-
 
   if (creditcardNum) {
     creditcardNum.addEventListener("click", () => {
@@ -36,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (zipInput) {
     // Fix: Use correct method name 'calculateOrderTotal' and check if it exists
     zipInput.addEventListener("blur", () => {
-      if (typeof myCheckout.calculateOrderTotal === 'function') {
+      if (typeof myCheckout.calculateOrderTotal === "function") {
         myCheckout.calculateOrderTotal();
       }
     });
@@ -47,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const chk_status = myForm.checkValidity();
       myForm.reportValidity();
-      
+
       if (chk_status) {
         myCheckout.checkout();
         window.location.href = "../checkout/success.html";
