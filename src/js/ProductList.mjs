@@ -42,13 +42,36 @@ export default class ProductList {
 
   // Helper method to calculate discount information
   getDiscountInfo(product) {
-    const finalPrice = parseFloat(product.FinalPrice) || 0;
-    const suggestedPrice = parseFloat(product.SuggestedRetailPrice) || 0;
+    // Handle different possible property names for prices
+    const finalPrice = parseFloat(product.FinalPrice || product.ListPrice) || 0;
+    const suggestedPrice =
+      parseFloat(
+        product.SuggestedRetailPrice ||
+          product.MSRP ||
+          product.OriginalPrice ||
+          product.RetailPrice,
+      ) || 0;
+
+    console.log(
+      "Product:",
+      product.Name,
+      "Final:",
+      finalPrice,
+      "Suggested:",
+      suggestedPrice,
+    );
 
     if (suggestedPrice > 0 && finalPrice > 0 && finalPrice < suggestedPrice) {
       const discountAmount = suggestedPrice - finalPrice;
       const discountPercentage = Math.round(
         (discountAmount / suggestedPrice) * 100,
+      );
+
+      console.log(
+        "Discount found:",
+        discountPercentage + "%",
+        "Save:",
+        discountAmount,
       );
 
       return {
