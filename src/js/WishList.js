@@ -24,7 +24,7 @@ function renderWishlist() {
     .map(
       (item) => `
     <li class="wishlist-card">
-      <img src="${item.Images.PrimaryMedium}" alt="${item.Name}"/>
+      <img src="${item.Images?.PrimaryMedium || 'images/fallback.jpg'}" alt="${item.Name}"/>
       <div class="wishlist-card__content">
         <h3>${item.Brand.Name}</h3>
         <h2>${item.NameWithoutBrand}</h2>
@@ -69,3 +69,5 @@ function addWishlistListeners() {
 document.addEventListener("DOMContentLoaded", () => {
   renderWishlist();
 });
+
+
